@@ -1,0 +1,2 @@
+#!/bin/sh
+sudo openvpn --config $XDG_CONFIG_HOME/profile-115.ovpn
