@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if setxkbmap -query | grep -q intl; then
+  setxkbmap -layout us
+else
+  setxkbmap -layout us -variant intl
+fi

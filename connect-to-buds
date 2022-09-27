@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if bluetoothctl info 64:03:7F:F6:DD:A3 | grep -q "Connected: yes"; then
+  bluetoothctl disconnect 64:03:7F:F6:DD:A3 
+else
+  rfkill unblock all
+  bluetoothctl connect 64:03:7F:F6:DD:A3
+fi
