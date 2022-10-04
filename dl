@@ -1,0 +1,3 @@
+#!/bin/sh
+d=$(basename $PWD)
+yt-dlp --sub-langs fr --write-subs -o "$d-$1.%(ext)s" $2
