@@ -1,2 +1,2 @@
 #!/bin/sh
-mpv *$1*mp4
+mpv *$1.mp4
