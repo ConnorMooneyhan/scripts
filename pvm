@@ -1,0 +1,47 @@
+#!/bin/bash
+
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+MAGENTA="\033[0;35m"
+
+function get_version {
+  php -v | head -n 1 | grep -o [0-9].[0-9].[0-9] | head -n 1
+}
+
+function list_versions {
+  ls -r /usr/bin | grep php | grep -o [0-9].[0-9]
+}
+
+if [ $# -eq 0 ] || [ $1 = "help" ]; then
+# HELP
+  echo "┌───────────────────────────────────────────────────────────────┐"
+  echo "│=======================PHPVersionManager=======================│"
+  echo "│pvm current                                                    │"
+  echo "│---------------------------------------show current PHP version│"
+  echo "│pvm use [<version>]                                            │"
+  echo "│----------------------switch to PHP <version> if it's installed│"
+  echo "│pvm list                                                       │"
+  echo "│---------------------------------list installed versions of PHP│"
+  echo "│pvm help                                                       │"
+  echo "│-------------------------------------------------show this page│"
+  echo "└───────────────────────────────────────────────────────────────┘"
+elif [ $1 = "c" ] || [ $1 = "current" ]; then
+# CURRENT
+  echo -e "PHP $(get_version)"
+elif [ $1 = "use" ]; then
+# USE
+  sudo update-alternatives --set php /usr/bin/php$(list_versions | grep $2 | head -n 1) --quiet
+  if [ $? -eq 0 ]; then
+    echo -e "${GREEN}Switched to PHP $(get_version)"
+  fi
+elif [ $1 = "list" ]; then
+# LIST
+  echo list_versions
+else
+# COMMAND NOT FOUND
+  echo -e "${RED}Command \"$1\" not found. Run pvm help for a list of possible commands."
+fi
+
+####################---TO-DO---####################
+# Add colors in pvm list to color currently used version (green) differently from others
+# Add install command to install PHP version AND dependencies already installed for other versions
