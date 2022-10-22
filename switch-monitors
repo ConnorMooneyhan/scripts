@@ -1,0 +1,6 @@
+#!/bin/bash
+active_monitor="$(xrandr -q | grep ' connected ' | grep '[0-9]\+x[0-9]\+' | grep -o '^\S\+' | head -n 1)"
+alternate_monitor="$(xrandr -q | grep ' connected ' | grep -v '[0-9]\+x[0-9]\+' | grep -o '^\S\+' | head -n 1)"
+xrandr --output $active_monitor --off
+xrandr --output $alternate_monitor --auto
+
