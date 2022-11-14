@@ -1,0 +1,16 @@
+#!/bin/sh
+# accepts one argument: the file or directory from which to start looking for a Cargo.toml
+
+search_dir="$1"
+path_to_toml=""
+
+while [ "$path_to_toml" = "" ]
+do
+  if ls $search_dir | grep -q Cargo.toml; then
+    path_to_toml="$search_dir"
+  else
+    search_dir="$(dirname $search_dir)"
+  fi
+done
+
+cargo run --manifest-path "$path_to_toml/Cargo.toml"
