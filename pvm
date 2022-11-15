@@ -3,6 +3,7 @@
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 MAGENTA="\033[0;35m"
+NO_COLOR="\033[0m"
 
 function get_version {
   php -v | head -n 1 | grep -o [0-9].[0-9].[0-9] | head -n 1
@@ -32,11 +33,17 @@ elif [ $1 = "use" ]; then
 # USE
   sudo update-alternatives --set php /usr/bin/php$(list_versions | grep $2 | head -n 1) --quiet
   if [ $? -eq 0 ]; then
-    echo -e "${GREEN}Switched to PHP $(get_version)"
+    echo -e "Switched to PHP $(get_version)"
   fi
 elif [ $1 = "list" ]; then
 # LIST
-  echo list_versions
+  list_versions | while read -r line; do
+    if [ $(get_version | grep ${line} -c) = 1 ]; then
+      echo -e "${GREEN}${line} <-- current version${NO_COLOR}"
+    else
+      echo $line
+    fi
+  done
 else
 # COMMAND NOT FOUND
   echo -e "${RED}Command \"$1\" not found. Run pvm help for a list of possible commands."
